@@ -3,6 +3,8 @@ package util
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func ReadInput(day int) string {
@@ -15,4 +17,15 @@ func ReadInput(day int) string {
 	}
 
 	return string(content)
+}
+
+func StringsToNums(strs []string) []int {
+	var nums []int
+
+	for _, str := range strs {
+		num, _ := strconv.Atoi(strings.Trim(str, " "))
+		nums = append(nums, num)
+	}
+
+	return nums
 }
