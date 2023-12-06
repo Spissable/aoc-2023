@@ -19,12 +19,16 @@ func ReadInput(day int) string {
 	return string(content)
 }
 
+func StringToNum(str string) int {
+	num, _ := strconv.Atoi(strings.Trim(str, " "))
+	return num
+}
+
 func StringsToNums(strs []string) []int {
 	var nums []int
 
 	for _, str := range strs {
-		num, _ := strconv.Atoi(strings.Trim(str, " "))
-		nums = append(nums, num)
+		nums = append(nums, StringToNum(str))
 	}
 
 	return nums
