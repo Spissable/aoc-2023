@@ -1,18 +1,18 @@
-package puzzle2
+package day7
 
 import (
 	"aoc-2023/util"
 	"testing"
 )
 
-func TestSolvePuzzle1(t *testing.T) {
+func TestSolvePuzzle2(t *testing.T) {
 	input := util.ReadInput(7)
 
-	sortedPlayers := parseGame(input)
+	sortedPlayers := parseGameP2(input)
 
 	result := solvePuzzle2(sortedPlayers)
 
-	if result != 505494 {
+	if result != 254412181 {
 		t.Error(result)
 	}
 }

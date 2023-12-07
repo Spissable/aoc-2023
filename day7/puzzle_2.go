@@ -1,69 +1,67 @@
-package puzzle2
+package day7
 
 import (
 	"aoc-2023/util"
-	"fmt"
 	"slices"
 	"strings"
 )
 
-type Hand int
+type HandP2 int
 
-type Card int
+type CardP2 int
 
 const (
-	J     Card = 0
-	One   Card = 1
-	Two   Card = 2
-	Three Card = 3
-	Four  Card = 4
-	Five  Card = 5
-	Six   Card = 6
-	Seven Card = 7
-	Eight Card = 8
-	Nine  Card = 9
-	T     Card = 10
-	Q     Card = 12
-	K     Card = 13
-	A     Card = 14
+	JP2     CardP2 = 0
+	OneP2   CardP2 = 1
+	TwoP2   CardP2 = 2
+	ThreeP2 CardP2 = 3
+	FourP2  CardP2 = 4
+	FiveP2  CardP2 = 5
+	SixP2   CardP2 = 6
+	SevenP2 CardP2 = 7
+	EightP2 CardP2 = 8
+	NineP2  CardP2 = 9
+	TP2     CardP2 = 10
+	QP2     CardP2 = 12
+	KP2     CardP2 = 13
+	AP2     CardP2 = 14
 )
 
 const (
-	HighCard  Hand = 1
-	OnePair   Hand = 2
-	TwoPair   Hand = 3
-	ThreeKind Hand = 4
-	FullHouse Hand = 5
-	FourKind  Hand = 6
-	FiveKind  Hand = 7
+	HighCardP2  HandP2 = 1
+	OnePairP2   HandP2 = 2
+	TwoPairP2   HandP2 = 3
+	ThreeKindP2 HandP2 = 4
+	FullHouseP2 HandP2 = 5
+	FourKindP2  HandP2 = 6
+	FiveKindP2  HandP2 = 7
 )
 
-type Player struct {
-	cards []Card
+type PlayerP2 struct {
+	cards []CardP2
 	bid   int
-	hand  Hand
+	hand  HandP2
 }
 
-func solvePuzzle2(sortedPlayers []Player) int {
-
-	fmt.Println(sortedPlayers)
+func solvePuzzle2(sortedPlayerP2s []PlayerP2) int {
 	sum := 0
 
-	for i, player := range sortedPlayers {
+	for i, player := range sortedPlayerP2s {
 		sum += (i + 1) * player.bid
 	}
 
 	return sum
 }
 
-func getHandValue(cards []Card) Hand {
-	groups := map[Card]int{}
+func getHandP2Value(cards []CardP2) HandP2 {
+	groups := map[CardP2]int{}
 
 	biggestGroupLength := 0
-	var biggestGroupKey Card
+	jokerCount := 0
+	var biggestGroupKey CardP2
 
 	for _, card := range cards {
-		if card != J {
+		if card != JP2 {
 			groups[card]++
 
 			groupLength := groups[card]
@@ -71,59 +69,61 @@ func getHandValue(cards []Card) Hand {
 				biggestGroupLength = groupLength
 				biggestGroupKey = card
 			}
+		} else {
+			jokerCount++
 		}
 	}
 
 	// Add the Joker to the biggest group for maximum effect
-	groups[biggestGroupKey]++
+	groups[biggestGroupKey] += jokerCount
 
 	groupCount := len(groups)
 
 	if groupCount == 1 {
-		return FiveKind
+		return FiveKindP2
 	}
 	if groupCount == 2 {
 		for _, count := range groups {
 			if count == 1 || count == 4 {
-				return FourKind
+				return FourKindP2
 			}
-			return FullHouse
+			return FullHouseP2
 		}
 	}
 	if groupCount == 3 {
 		for _, count := range groups {
 			if count == 3 {
-				return ThreeKind
+				return ThreeKindP2
 			}
 			if count == 2 {
-				return TwoPair
+				return TwoPairP2
 			}
 		}
 	}
 	if groupCount == 4 {
-		return OnePair
+		return OnePairP2
 	}
 
-	return HighCard
+	return HighCardP2
 }
 
-func insertPlayerSorted(player Player, players []Player) []Player {
+func insertPlayerP2SortedP2(player PlayerP2, players []PlayerP2) []PlayerP2 {
 	for i, p := range players {
 		if player.hand < p.hand {
-			// Hand has smaller value
+			// HandP2 has smaller value
 			return slices.Insert(players, i, player)
 		}
 		if player.hand == p.hand {
 			for i2, card := range player.cards {
 				if card < p.cards[i2] {
-					// Hand has same value but lesser card
+					// HandP2 has same value but lesser card
 					return slices.Insert(players, i, player)
 				}
 				if card > p.cards[i2] {
-					// Hand has same value but higher card, continue outer loop to check with next player
+					// HandP2 has same value but higher card, continue outer loop to check with next player
 					break
 				}
-				// Hand has same value and current card is same value, continue inner loop and check next card
+				// HandP2 has same value and current card is same value, continue inner loop and check next card
 			}
 		}
 	}
@@ -131,61 +131,61 @@ func insertPlayerSorted(player Player, players []Player) []Player {
 	return append(players, player)
 }
 
-func stringToCard(str string) Card {
+func stringToCardP2(str string) CardP2 {
 	switch str {
 	case "1":
-		return One
+		return OneP2
 	case "2":
-		return Two
+		return TwoP2
 	case "3":
-		return Three
+		return ThreeP2
 	case "4":
-		return Four
+		return FourP2
 	case "5":
-		return Five
+		return FiveP2
 	case "6":
-		return Six
+		return SixP2
 	case "7":
-		return Seven
+		return SevenP2
 	case "8":
-		return Eight
+		return EightP2
 	case "9":
-		return Nine
+		return NineP2
 	case "T":
-		return T
+		return TP2
 	case "J":
-		return J
+		return JP2
 	case "Q":
-		return Q
+		return QP2
 	case "K":
-		return K
+		return KP2
 	case "A":
-		return A
+		return AP2
 	}
 
-	panic("Unknown Card")
+	panic("Unknown CardP2")
 }
 
-func parseGame(input string) []Player {
+func parseGameP2(input string) []PlayerP2 {
 	lines := strings.Split(input, "\n")
-	var players []Player
+	var players []PlayerP2
 
 	for _, line := range lines {
 		parts := strings.Split(line, " ")
 		bid := util.StringToNum(parts[1])
-		var cards []Card
+		var cards []CardP2
 
 		for _, card := range parts[0] {
-			cards = append(cards, stringToCard(string(card)))
+			cards = append(cards, stringToCardP2(string(card)))
 		}
 
-		player := Player{
+		player := PlayerP2{
 			cards: cards,
 			bid:   bid,
-			hand:  getHandValue(cards),
+			hand:  getHandP2Value(cards),
 		}
 
-		players = insertPlayerSorted(player, players)
+		players = insertPlayerP2SortedP2(player, players)
 	}
 
 	return players
