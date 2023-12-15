@@ -41,7 +41,7 @@ func calcPairingDistance(a, b Coords) int {
 	return steps
 }
 
-func parseUniverse(input string) Galaxies {
+func parseUniverse(input string, expansionSize int) Galaxies {
 	lines := strings.Split(input, "\n")
 
 	var universe Universe
@@ -62,14 +62,18 @@ func parseUniverse(input string) Galaxies {
 			row = append(row, isGalaxy)
 
 			if !columnContainsGalaxy(lines, x) {
-				row = append(row, false)
+				for i := 0; i < expansionSize; i++ {
+					row = append(row, false)
+				}
 			}
 		}
 
 		universe = append(universe, row)
 
 		if !rowGalaxy {
-			universe = append(universe, row)
+			for i := 0; i < expansionSize; i++ {
+				universe = append(universe, row)
+			}
 		}
 	}
 
