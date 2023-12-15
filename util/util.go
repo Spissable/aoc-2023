@@ -33,19 +33,3 @@ func StringsToNums(strs []string) []int {
 
 	return nums
 }
-
-func MaxInt(a, b int, nums ...int) int {
-	m := a
-
-	if b > a {
-		m = b
-	}
-
-	for _, num := range nums {
-		if num > m {
-			m = num
-		}
-	}
-
-	return m
-}
